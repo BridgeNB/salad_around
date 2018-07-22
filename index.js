@@ -1,25 +1,39 @@
-const YOUTUBE_SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search';
-const YOUTUBE_KEY = 'AIzaSyBDQ7sLSCjnrRNWpM2jgBdUD8_TGZsTHfg';
+const GOOGLE_SEARCH_ENDPOINT = 'https://www.google.com/maps/embed/v1/search';
+const GOOGLE_API_KEY = 'AIzaSyBDQ7sLSCjnrRNWpM2jgBdUD8_TGZsTHfg';
+const YELP_SEARCH_ENDPOINT = 'https://api.yelp.com/v3/businesses/search';
+const YELP_API_KEY = 'mk7sGaCiv88uf6MSDmlSwzQzx7by9lzSij0drVP0_CfP8_o02dsEGykWMtlsuLMUVhXuh2KzUjXOZjCnFBSxMMs48P99VHwo8bNh7Vw2HyYO4Kno2HSgxjs-t31LW3Yx';
 
-function getDataFromApi(searchTerm, callback) {
-  const query = {
-    part: 'snippet',
-    key: YOUTUBE_KEY,
-    q: searchTerm
+// https://api.yelp.com/v3/businesses/search?term='salad'&latitude=37.786882&longitude=-122.399972&radius=8000
+// "https://www.google.com/maps/embed/v1/search?q=salad%20near%2090012&key=AIzaSyBuBYYOAhc9oPX2SUjzEjz3vdT8mZ4u-84"
+
+let yelp_settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api.yelp.com/v3/businesses/search?term='salad'&latitude=37.786882&longitude=-122.399972&radius=8000",
+  "method": "GET",
+  "headers": {
+    "authorization": "Bearer mk7sGaCiv88uf6MSDmlSwzQzx7by9lzSij0drVP0_CfP8_o02dsEGykWMtlsuLMUVhXuh2KzUjXOZjCnFBSxMMs48P99VHwo8bNh7Vw2HyYO4Kno2HSgxjs-t31LW3Yx",
+    "cache-control": "no-cache",
   }
-  $.getJSON(YOUTUBE_SEARCH_URL, query, callback);
+}
+
+function retrieveDataFromApi (query, yelp_settings) {
+  $.ajax(yelp_settings).done(function (response) {
+    console.log(response);
+  });
 }
 
 function renderResult(result) {
+  console.log('here');
   console.log(result);
   return `
     <div>
-      <img src=${result.snippet.thumbnails.medium.url}>
+      ${result};
     </div>
   `;
 }
 
-function displayGitHubSearchData(data) {
+function displaySearchData(data) {
   const results = data.items.map((item, index) => renderResult(item));
   $('.js-search-results').html(results);
 }
@@ -31,7 +45,7 @@ function watchSubmit() {
     const query = queryTarget.val();
     // clear out the input
     queryTarget.val("");
-    getDataFromApi(query, displayGitHubSearchData);
+    retrieveDataFromApi(query, displaySearchData);
   });
 }
 
