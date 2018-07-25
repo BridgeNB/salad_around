@@ -38,12 +38,13 @@
           function success(position) {
             latitude  = position.coords.latitude;
             longitude = position.coords.longitude;
+            initMap();
           }
           function error() {
             output.innerHTML = "Unable to retrieve your location";
           }
           navigator.geolocation.getCurrentPosition(success, error);
-          initMap();
+          // initMap();
 
           $('#map').css("display", "block");
           $('.salad_list').css("display", "block");
@@ -52,10 +53,8 @@
       /******* Google Map **********/
       function initMap() {
 
-        var pyrmont = {lat: latitude, lng: longitude};
-
         map = new google.maps.Map(document.getElementById('map'), {
-          center: pyrmont,
+          center: {lat: latitude, lng: longitude},
           zoom: 15
         });
 
@@ -68,6 +67,8 @@
           type: ['salad']
         }, callback);
       }
+
+      
 
       function callback(results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
