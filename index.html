@@ -1,117 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Place Searches</title>
+    <title>Salads around</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 50%;
-        display: none;
-      }
-      .salad_list {
-        display: none;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-    <script>
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-
-      let map;
-      let infowindow;
-
-      /********* initiate map **********/
-      let latitude = -33.867;
-      let longitude = 151.195;
-
-      /******* obtain location ********/
-      function getLoation() {
-          function success(position) {
-            latitude  = position.coords.latitude;
-            longitude = position.coords.longitude;
-          }
-          function error() {
-            output.innerHTML = "Unable to retrieve your location";
-          }
-          navigator.geolocation.getCurrentPosition(success, error);
-          initMap();
-
-          $('#map').css("display", "block");
-          $('.salad_list').css("display", "block");
-      }
-
-      /******* Google Map **********/
-      function initMap() {
-
-        var pyrmont = {lat: latitude, lng: longitude};
-
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: pyrmont,
-          zoom: 15
-        });
-
-        infowindow = new google.maps.InfoWindow();
-        var service = new google.maps.places.PlacesService(map);
-        service.nearbySearch({
-          // location: pyrmont,
-          location: {lat: latitude, lng: longitude},
-          radius: 500,
-          type: ['salad']
-        }, callback);
-      }
-
-      function callback(results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-          for (var i = 0; i < results.length; i++) {
-            createMarker(results[i]);
-          }
-          createSaladList(results);
-        }
-      }
-
-      function createMarker(place) {
-        var placeLoc = place.geometry.location;
-        var marker = new google.maps.Marker({
-          map: map,
-          position: place.geometry.location
-        });
-        google.maps.event.addListener(marker, 'click', function() {
-          infowindow.setContent(place.name);
-          infowindow.open(map, this);
-        });
-      }
-
-      /******* Salad List **********/
-      function createSaladList(places) {
-        const saladList = places.map((place) => renderResult(place))
-        $('.salad_list').html(saladList);
-      }
-
-      function renderResult(place) {
-        return `
-          <div>
-            ${place.name};
-          </div>
-        `;
-      }
-
-    </script>
+    <link ref="stylesheet" href="index.css">
   </head>
   <body>
-    <p><button onclick="getLoation()">Show my location</button></p>
-    <div id="out"></div>
+    <p><button onclick="getLocation()">Show my location</button></p>
+    <!-- <div class="loading-img"></div> -->
     <div id="map"></div>
     <div class="salad_list"></div>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDQ7sLSCjnrRNWpM2jgBdUD8_TGZsTHfg&libraries=places&callback=initMap" async defer></script>
+    <script src="index.js"></script>
   </body>
 </html>

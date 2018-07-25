@@ -1,52 +1,76 @@
-const GOOGLE_SEARCH_ENDPOINT = 'https://www.google.com/maps/embed/v1/search';
-const GOOGLE_API_KEY = 'AIzaSyBDQ7sLSCjnrRNWpM2jgBdUD8_TGZsTHfg';
-const YELP_SEARCH_ENDPOINT = 'https://api.yelp.com/v3/businesses/search';
-const YELP_API_KEY = 'mk7sGaCiv88uf6MSDmlSwzQzx7by9lzSij0drVP0_CfP8_o02dsEGykWMtlsuLMUVhXuh2KzUjXOZjCnFBSxMMs48P99VHwo8bNh7Vw2HyYO4Kno2HSgxjs-t31LW3Yx';
+let map;
+let infowindow;
+/********* initiate map **********/
+let latitude = -33.867;
+let longitude = 151.195;
+/******* obtain location ********/
+function getLocation() {
+    function success(position) {
+      latitude  = position.coords.latitude;
+      longitude = position.coords.longitude;
+      debugger;
+      initMap();
+      $('#map').css("display", "block");
+      $('.salad_list').css("display", "block");
+    }
+    function error() {
+      output.innerHTML = "Unable to retrieve your location";
+    }
+    navigator.geolocation.getCurrentPosition(success, error);
 
-// https://api.yelp.com/v3/businesses/search?term='salad'&latitude=37.786882&longitude=-122.399972&radius=8000
-// "https://www.google.com/maps/embed/v1/search?q=salad%20near%2090012&key=AIzaSyBuBYYOAhc9oPX2SUjzEjz3vdT8mZ4u-84"
-
-let yelp_settings = {
-  "async": true,
-  "crossDomain": true,
-  "url": "https://api.yelp.com/v3/businesses/search?term='salad'&latitude=37.786882&longitude=-122.399972&radius=8000",
-  "method": "GET",
-  "headers": {
-    "authorization": "Bearer mk7sGaCiv88uf6MSDmlSwzQzx7by9lzSij0drVP0_CfP8_o02dsEGykWMtlsuLMUVhXuh2KzUjXOZjCnFBSxMMs48P99VHwo8bNh7Vw2HyYO4Kno2HSgxjs-t31LW3Yx",
-    "cache-control": "no-cache",
+}
+/******* Google Map **********/
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: latitude, lng: longitude},
+    zoom: 15
+  });
+  infowindow = new google.maps.InfoWindow();
+  var service = new google.maps.places.PlacesService(map);
+  service.nearbySearch({
+    // location: pyrmont,
+    location: {lat: latitude, lng: longitude},
+    radius: 500,
+    type: ['salad']
+  }, callback);
+}
+function updateMap() {
+  map.setCenter({lat: latitude, lng: longitude});
+  service.nearbySearch({
+    // location: pyrmont,
+    location: {lat: latitude, lng: longitude},
+    radius: 500,
+    type: ['salad']
+  }, callback);
+}
+function callback(results, status) {
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      createMarker(results[i]);
+    }
+    createSaladList(results);
   }
 }
-
-function retrieveDataFromApi (query, yelp_settings) {
-  $.ajax(yelp_settings).done(function (response) {
-    console.log(response);
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+  var marker = new google.maps.Marker({
+    map: map,
+    position: place.geometry.location
+  });
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
   });
 }
-
-function renderResult(result) {
-  console.log('here');
-  console.log(result);
+/******* Salad List **********/
+function createSaladList(places) {
+  const saladList = places.map((place) => renderResult(place))
+  $('.salad_list').html(saladList);
+}
+function renderResult(place) {
   return `
     <div>
-      ${result};
+      ${place.name};
     </div>
   `;
 }
-
-function displaySearchData(data) {
-  const results = data.items.map((item, index) => renderResult(item));
-  $('.js-search-results').html(results);
-}
-
-function watchSubmit() {
-  $('.js-search-form').submit(event => {
-    event.preventDefault();
-    const queryTarget = $(event.currentTarget).find('.js-query');
-    const query = queryTarget.val();
-    // clear out the input
-    queryTarget.val("");
-    retrieveDataFromApi(query, displaySearchData);
-  });
-}
-
-$(watchSubmit);
