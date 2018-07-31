@@ -39,10 +39,12 @@ html, body {
 .salad_list {
   display: none;
   text-align: center;
+  overflow-y: auto;
+  max-height: 50vh;
 }
 
 .salad_list .item {
-  box-shadow: 0 1vh black;
+  box-shadow: 0 1vh 0.5vw -0.5vh black;
 }
 
 .salad_list .item h6 {

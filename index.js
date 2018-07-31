@@ -14,6 +14,7 @@ let longitude = 151.195;
 
 /******* obtain location ********/
 function getLocation() {
+  $('#get_location').click(function() {
     function success(position) {
       latitude  = position.coords.latitude;
       longitude = position.coords.longitude;
@@ -26,7 +27,7 @@ function getLocation() {
       output.innerHTML = "Unable to retrieve your location";
     }
     navigator.geolocation.getCurrentPosition(success, error);
-
+  });
 }
 
 /******* Google Map **********/
@@ -47,9 +48,9 @@ function getDataFromApi(callback) {
   const query = {
     ll: `${latitude},${longitude}`,
     query: 'salad',
-    limit: 5,
+    limit: 10,
     oauth_token: '2O1WJFKQFWUMUXZ1DUQL41UWA3H00MTTPNPBYSVNTOHXIYR4',
-    v: 20180630
+    v: getDate()
   }
   $.getJSON(FOUR_SQUARE_SEARCH_ENDPOINT, query, createMarkers);
 }
@@ -87,9 +88,36 @@ function createSaladList(places) {
 
 function renderResult(index, place) {
   return `
-    <div class="item">
+    <div class="item" data-id="${index}" data-lat="${place.location.lat}" data-lng="${place.location.lng}">
       <h4>${index + 1}. ${place.name}</h4>
       <h6>${place.location.address}</h6>
     </div>
   `;
 }
+
+function saladListItemReallocate() {
+  $('.salad_list').on('click', '.item', function() {
+    $(this).find('.item').toggle('fast');
+    var thisLat = $(this).data('lat');
+    var thisLng = $(this).data('lng');
+    map.setZoom(16);
+    map.panTo(new google.maps.LatLng(thisLat, thisLng));
+  });
+}
+
+/******** help function ******/
+function getDate() {
+  n = new Date();
+  y = n.getFullYear();
+  m = n.getMonth() < 9? '0' + (n.getMonth() + 1) : (n.getMonth());
+  d = n.getDate() < 10? '0' + n.getDate() : n.getDate();
+  return '' + y + m + d;
+}
+
+/******** main *********/
+function main() {
+  saladListItemReallocate();
+  getLocation();
+}
+
+$(main);
