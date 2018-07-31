@@ -2,20 +2,50 @@
   box-sizing: border-box;
 }
 
-body {
-  padding-top: 50px;
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: #3CB371;
+  font-family: 'roboto', sans-serif;
 }
 
+/* welcome page */
+.welcome_page {
+
+  margin: 0 auto;
+  padding: 5vh;
+  text-align: center;
+  margin-top: 20vh;
+
+  text-align: center;
+
+}
+
+#get_location {
+  display: block;
+  margin: 0 auto;
+  height: 8vh;
+  width: 35vw;
+  font-weight: bold;
+}
+
+/* map */
 #map {
   height: 50%;
   display: none;
 }
+
+/* salad list */
 .salad_list {
   display: none;
+  text-align: center;
 }
-/* Optional: Makes the sample page fill the window. */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+
+.salad_list .item {
+  box-shadow: 0 1vh black;
+}
+
+.salad_list .item h6 {
+  margin-top: 1vh;
+  padding-bottom: 3vh;
 }

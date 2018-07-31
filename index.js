@@ -18,6 +18,7 @@ function getLocation() {
       latitude  = position.coords.latitude;
       longitude = position.coords.longitude;
       updateMap();
+      $('.welcome_page').css('display', 'none');
       $('#map').css("display", "block");
       $('.salad_list').css("display", "block");
     }
@@ -27,33 +28,21 @@ function getLocation() {
     navigator.geolocation.getCurrentPosition(success, error);
 
 }
+
 /******* Google Map **********/
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: latitude, lng: longitude},
     zoom: 15
   });
-  // infowindow = new google.maps.InfoWindow();
-  // var service = new google.maps.places.PlacesService(map);
-  // service.nearbySearch({
-  //   // location: pyrmont,
-  //   location: {lat: latitude, lng: longitude},
-  //   radius: 500,
-  //   type: ['salad']
-  // }, callback);
 }
 
 function updateMap() {
   map.setCenter({lat: latitude, lng: longitude});
-  getDataFromApi(callback);
-  // service.nearbySearch({
-  //   // location: pyrmont,
-  //   location: {lat: latitude, lng: longitude},
-  //   radius: 500,
-  //   type: ['salad']
-  // }, callback);
+  getDataFromApi(createMarkers);
 }
 
+/******** data retrieve ******/
 function getDataFromApi(callback) {
   const query = {
     ll: `${latitude},${longitude}`,
@@ -61,53 +50,46 @@ function getDataFromApi(callback) {
     limit: 5,
     oauth_token: '2O1WJFKQFWUMUXZ1DUQL41UWA3H00MTTPNPBYSVNTOHXIYR4',
     v: 20180630
-    // client_id: `${FOUR_SQUARE_ID}`,
-    // client_secret: `${FOUR_SQUARE_API_KEY}`,
   }
-  $.getJSON(FOUR_SQUARE_SEARCH_ENDPOINT, query, callback);
+  $.getJSON(FOUR_SQUARE_SEARCH_ENDPOINT, query, createMarkers);
 }
 
-function callback(results, status) {
-  console.log('foursquare');
-  console.log(status);
-  console.log(results);
-  console.log(results.response);
-  console.log(results.response.venues[0].location.lat);
+function createMarkers(results, status) {
   let salads = results.response.venues;
+  let bounds = new google.maps.LatLngBounds();
+  let infowindow = new google.maps.InfoWindow();
+  let maker;
+  console.log(salads);
   for (let i = 0; i < salads.length; i++) {
-    let location = {lat: salads[i].location.lat, lng: salads[i].location.lng};
-    createMarker(location);
+    let location = new google.maps.LatLng(salads[i].location.lat, salads[i].location.lng);
+    marker = new google.maps.Marker({
+      map: map,
+      position: location
+    });
+    bounds.extend(location);
+    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+      return function() {
+        infowindow.setContent('<h3>' + (i + 1) + '\. ' +  salads[i].name + '</h3>');
+        infowindow.open(map, marker);
+      }
+    })(marker, i));
+    map.fitBounds(bounds);
+
   }
   createSaladList(salads);
-  // if (status === google.maps.places.PlacesServiceStatus.OK) {
-  //   for (var i = 0; i < results.length; i++) {
-  //     createMarker(results[i]);
-  //   }
-  //   createSaladList(results);
-  // }
 }
 
-function createMarker(location) {
-  // let placeLoc = {place.location.lat, place.location.lng};
-  console.log(location);
-  let marker = new google.maps.Marker({
-    map: map,
-    position: location
-  });
-  // google.maps.event.addListener(marker, 'click', function() {
-  //   infowindow.setContent(place.name);
-  //   infowindow.open(map, this);
-  // });
-}
 /******* Salad List **********/
 function createSaladList(places) {
-  const saladList = places.map((place) => renderResult(place))
+  const saladList = places.map((place, index) => renderResult(index, place))
   $('.salad_list').html(saladList);
 }
-function renderResult(place) {
+
+function renderResult(index, place) {
   return `
-    <div>
-      ${place.name};
+    <div class="item">
+      <h4>${index + 1}. ${place.name}</h4>
+      <h6>${place.location.address}</h6>
     </div>
   `;
 }
