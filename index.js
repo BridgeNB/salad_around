@@ -71,7 +71,7 @@ function createMarkers(results, status) {
     bounds.extend(location);
     google.maps.event.addListener(marker, 'click', (function(marker, i) {
       return function() {
-        let phone = salads[i].contact.phone? salads[i].contact.phone : "Phone not found";
+        let phone = salads[i].contact.phone? salads[i].contact.phone : "";
         infowindow.setContent('<h3>' + (i + 1) + '\. ' +  salads[i].name + '</h3><h4>' + 'Contact: ' + phone + '</h4>');
         infowindow.open(map, marker);
       }
@@ -89,10 +89,11 @@ function createSaladList(places) {
 }
 
 function renderResult(index, place) {
+  let address = place.location.address? place.location.address : "";
   return `
     <div class="item" tabindex="${index}" data-id="${index}" data-lat="${place.location.lat}" data-lng="${place.location.lng}">
       <h4>${index + 1}. ${place.name}</h4>
-      <h6>${place.location.address}</h6>
+      <h6>${address}</h6>
     </div>
   `;
 }

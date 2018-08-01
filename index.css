@@ -21,15 +21,21 @@ html, body {
   border: 1px solid black;
   margin-left: 5%;
   margin-right: 5%;
+  position: relative;
 }
 
 .corner {
   position: absolute;
   background-image: url("asset/lettuce.jpg");
-  width: 20px;
-  height: 20px;
+  background-size: cover;
+  width: 80px;
+  height: 80px;
 }
 
+.top_left {
+  left: -40px;
+  top: -40px;
+}
 
 #get_location {
   display: block;
@@ -73,6 +79,10 @@ html, body {
 
 .salad_list .item {
   box-shadow: 0 1vh 0.5vw -0.5vh black;
+}
+
+.salad_list .item:focus {
+  background-color: white;
 }
 
 .salad_list .item h6 {
