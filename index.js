@@ -61,6 +61,7 @@ function createMarkers(results, status) {
   let bounds = new google.maps.LatLngBounds();
   let infowindow = new google.maps.InfoWindow();
   let maker;
+  console.log(salads);
   for (let i = 0; i < salads.length; i++) {
     let location = new google.maps.LatLng(salads[i].location.lat, salads[i].location.lng);
     marker = new google.maps.Marker({
@@ -70,7 +71,8 @@ function createMarkers(results, status) {
     bounds.extend(location);
     google.maps.event.addListener(marker, 'click', (function(marker, i) {
       return function() {
-        infowindow.setContent('<h3>' + (i + 1) + '\. ' +  salads[i].name + '</h3>');
+        let phone = salads[i].contact.phone? salads[i].contact.phone : "Phone not found";
+        infowindow.setContent('<h3>' + (i + 1) + '\. ' +  salads[i].name + '</h3><h4>' + 'Contact: ' + phone + '</h4>');
         infowindow.open(map, marker);
       }
     })(marker, i));

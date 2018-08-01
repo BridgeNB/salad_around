@@ -22,6 +22,13 @@
 }
 
 @media (min-width: 700px) {
+  .welcome_page {
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+  #get_location {
+    font-size: x-large;
+  }
   .salad_list {
     position: relative;
     width: 33.33%;
@@ -29,6 +36,9 @@
     max-height: 100%;
     padding-left: 10px;
     float: right;
+  }
+  .trans {
+    height: 0;
   }
   #map {
     position: absolute;

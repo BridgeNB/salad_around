@@ -18,8 +18,18 @@ html, body {
   margin-top: 20vh;
 
   text-align: center;
-
+  border: 1px solid black;
+  margin-left: 5%;
+  margin-right: 5%;
 }
+
+.corner {
+  position: absolute;
+  background-image: url("asset/lettuce.jpg");
+  width: 20px;
+  height: 20px;
+}
+
 
 #get_location {
   display: block;
@@ -29,6 +39,11 @@ html, body {
   font-weight: bold;
   background-color: white;
   border-radius: 5px;
+}
+
+#get_location:hover {
+  background-color: black;
+  color: white;
 }
 
 /* map */
