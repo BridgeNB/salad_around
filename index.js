@@ -22,6 +22,7 @@ function getLocation() {
       $('.welcome_page').css('display', 'none');
       $('#map').css("display", "block");
       $('.salad_list').css("display", "block");
+      $('.trans').css("display", "block");
     }
     function error() {
       output.innerHTML = "Unable to retrieve your location";
@@ -60,7 +61,6 @@ function createMarkers(results, status) {
   let bounds = new google.maps.LatLngBounds();
   let infowindow = new google.maps.InfoWindow();
   let maker;
-  console.log(salads);
   for (let i = 0; i < salads.length; i++) {
     let location = new google.maps.LatLng(salads[i].location.lat, salads[i].location.lng);
     marker = new google.maps.Marker({
@@ -88,7 +88,7 @@ function createSaladList(places) {
 
 function renderResult(index, place) {
   return `
-    <div class="item" data-id="${index}" data-lat="${place.location.lat}" data-lng="${place.location.lng}">
+    <div class="item" tabindex="${index}" data-id="${index}" data-lat="${place.location.lat}" data-lng="${place.location.lng}">
       <h4>${index + 1}. ${place.name}</h4>
       <h6>${place.location.address}</h6>
     </div>
