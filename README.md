@@ -1,8 +1,8 @@
-# Thinkful capstone project - Salad Around
+# Thinkful capstone project - Salads Around
 
 This project is to use Jquery, vanilla CSS and HTML to create a web application that can find nearby salads.
 
-## Salad around introduction
+## Salads around introduction
 ![home_page](/asset/home_page.png "Home page")
 
 Firstly, user click share location to use the app.
