@@ -3,11 +3,11 @@
 This project is to use Jquery, vanilla CSS and HTML to create a web application that can find nearby salads.
 
 ## Salad around introduction
-![home_page] (/asset/home_page.png "Home page")
+![home_page](/asset/home_page.png "Home page")
 
 Firstly, user click share location to use the app.
 
-![application_page] (/asset/application.png "Application page")
+![application_page](/asset/application_page.png "Application page")
 
 Secondly, user select the salad they want to go.
 
