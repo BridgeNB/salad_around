@@ -53,7 +53,10 @@ function getDataFromApi(callback) {
     oauth_token: '2O1WJFKQFWUMUXZ1DUQL41UWA3H00MTTPNPBYSVNTOHXIYR4',
     v: getDate()
   }
-  $.getJSON(FOUR_SQUARE_SEARCH_ENDPOINT, query, createMarkers);
+  $.getJSON(FOUR_SQUARE_SEARCH_ENDPOINT, query, createMarkers)
+    .fail(function() {
+      console.log("error in retrieve data");
+    });
 }
 
 function createMarkers(results, status) {
