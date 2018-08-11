@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Salads around</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -11,11 +11,12 @@
     <div class="welcome_page">
       <h1>Welcome to salads around</h1>
       <h4>Where you can find nearby salads</h4>
-      <button id="get_location">Share my location</button>
+      <button aria-label="get location" id="get_location">Share my location</button>
       <h4>Please allow us to obtain your location</h4>
     </div>
     <div class="trans"></div>
     <div class="salad_list"></div>
+    <button aria-label="go back" class="go_back">Go back</button>
     <div id="map"></div>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDQ7sLSCjnrRNWpM2jgBdUD8_TGZsTHfg&libraries=places&callback=initMap" async defer></script>

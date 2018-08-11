@@ -84,13 +84,27 @@ html, body {
 
 .salad_list .item {
   box-shadow: 0 1vh 0.5vw -0.5vh black;
+  color: white;
 }
 
 .salad_list .item:focus {
-  background-color: white;
+  background-color: black;
 }
 
 .salad_list .item h6 {
   margin-top: 1vh;
   padding-bottom: 3vh;
+}
+
+/* go back button */
+.go_back {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  font-size: large;
+  font-weight: bold;
+  border: 2px solid black;
+  border-radius: 5px;
+  margin-left: 16px;
+  bottom: 15px;
 }

@@ -23,6 +23,7 @@ function getLocation() {
       $('#map').css("display", "block");
       $('.salad_list').css("display", "block");
       $('.trans').css("display", "block");
+      $('.go_back').css("display", "block");
     }
     function error() {
       output.innerHTML = "Unable to retrieve your location";
@@ -111,6 +112,13 @@ function saladListItemReallocate() {
   });
 }
 
+/******** go back handler *****/
+function goBack() {
+  $('.go_back').click(() => {
+    location.reload();
+  })
+}
+
 /******** help function ******/
 function getDate() {
   n = new Date();
@@ -124,6 +132,7 @@ function getDate() {
 function main() {
   saladListItemReallocate();
   getLocation();
+  goBack();
 }
 
 $(main);
